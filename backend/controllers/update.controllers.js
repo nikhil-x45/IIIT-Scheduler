@@ -10,8 +10,13 @@ import {Department} from "../models/department.model.js";
 
 const updateRooms = asyncHandler( async ( req, res ) =>
 {
-    const {roomId, capacity} = req.body
-    const updatedRoom = await Room.findOneAndUpdate( {roomId: roomId}, {capacity: capacity}, {new: true} )
+    const {roomId, capacity,isLabRoom} = req.body
+    const updatedRoom = await Room.findOneAndUpdate( 
+        {roomId: roomId},
+         {capacity: capacity},
+         {isLabRoom: isLabRoom} ,
+         {new: true})
+
     if ( !updatedRoom )
     {
         throw new ApiError( 409, "Something went wrong while updating" )
@@ -36,14 +41,14 @@ const updateInstructors = asyncHandler( async ( req, res ) =>
 
 const updateCourses = asyncHandler( async ( req, res ) =>
 {
-    const {courseId, instructor, credit, coursecapacity} = req.body
+    const {courseId, instructor, credit, coursecapacity,isLab} = req.body
     // console.log(req.body)
     const course = await Course.find( {courseId} );
     const oldInstructorId = course[ 0 ]?.instructor.toString()
     // console.log(oldInstructorId)
     const updatedInstructor = await Instructor.findOneAndUpdate( {_id: oldInstructorId}, {name: instructor}, {new: true} )
     // console.log(updatedInstructor)
-    const updatedcourse = await Course.findOneAndUpdate( {courseId: courseId}, {coursecapacity: coursecapacity, instructor: updatedInstructor?._id, credit: credit}, {new: true} )
+    const updatedcourse = await Course.findOneAndUpdate( {courseId: courseId}, {coursecapacity: coursecapacity, instructor: updatedInstructor?._id, credit: credit},{isLab: isLab} ,{new: true} )
     if ( !updatedcourse )
     {
         throw new ApiError( 409, "Something went wrong while updating" )

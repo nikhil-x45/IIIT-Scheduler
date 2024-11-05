@@ -6,7 +6,7 @@ import { Room } from "../models/room.model.js";
 
 const setRoom = asyncHandler( async ( req, res ) =>
 {
-    const {roomId,capacity} = req.body
+    const {roomId,capacity,isLabRoom} = req.body
     if ( [ roomId].some( ( field ) => field?.trim() === '' ) )
     {
         throw new ApiError( 400, "All fields required" )
@@ -18,7 +18,9 @@ const setRoom = asyncHandler( async ( req, res ) =>
         throw new ApiError( 409, "Room already exist" )
     }
     const room = await Room.create( {
-        capacity, roomId
+        capacity, 
+        roomId,
+        isLabRoom: isLabRoom || false
     } )
     const createdRoom = await Room.findById( room._id )
     // console.log(createdRoom)

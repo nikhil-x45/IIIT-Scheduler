@@ -33,6 +33,12 @@ def get_data():
 
         def get_instructors(self):
             return self._instructors
+        
+        def get_lab_rooms(self):
+            return [room for room in self._rooms if room.get('isLabRoom', False)]
+        
+        def get_theory_rooms(self):
+            return [room for room in self._rooms if not room.get('isLabRoom', False)]
 
         def get_courses(self):
             return self._courses
@@ -42,6 +48,37 @@ def get_data():
 
         def get_meetingTimes(self):
             return self._meetingTimes
+        
+        def get_next_timeslot(meeting_time):
+            time_mapping = {
+               "09:30": "10:30",
+               "10:30": "11:30",
+               "11:30": "12:30",
+               "02:00": "03:00",
+               "03:00": "04:00",
+               "04:00": "05:00",
+        }
+        
+            current_start = meeting_time['startTime']
+            if current_start in time_mapping:
+                   for mt in data.get_meetingTimes():
+                      if (mt['day'] == meeting_time['day'] and 
+                         mt['startTime'] == time_mapping[current_start]):
+                        return mt
+            return None
+        def are_slots_consecutive(slot1, slot2):
+            time_pairs = {
+               "09:30": "10:30",
+               "10:30": "11:30",
+               "11:30": "12:30",
+               "02:00": "03:00",
+               "03:00": "04:00",
+               "04:00": "05:00",
+            }
+            return (slot1['day'] == slot2['day'] and 
+                    slot1['startTime'] in time_pairs and 
+                    time_pairs[slot1['startTime']] == slot2['startTime'])
+                    
 
     class Schedule:
         def __init__(self):

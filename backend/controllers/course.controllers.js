@@ -7,7 +7,7 @@ import {Instructor} from "../models/instructor.model.js";
 
 const setCourse = asyncHandler( async ( req, res ) =>
 {
-    const {courseId, instructorname, credit, coursecapacity} = req.body
+    const {courseId, instructorname, credit, coursecapacity,isLab} = req.body
     // console.log( req.body )
     if ( !credit || !coursecapacity )
     {
@@ -27,7 +27,11 @@ const setCourse = asyncHandler( async ( req, res ) =>
     const instructorQ = await Instructor.findOne( {name: instructorname} );
     const instructor = instructorQ._id;
     const course = await Course.create( {
-        courseId, instructor, credit, coursecapacity
+        courseId,
+        instructor,
+        credit, 
+        coursecapacity,
+        isLab: isLab || false,
     } )
     // console.log( course );
     const createdCourse = await Course.findById( course._id )
