@@ -19,6 +19,10 @@ const courseSchema = new Schema( {
     coursecapacity: {
         type: Number,
         required: true
+    },
+    isLab:{
+        type:Boolean,
+        default:false,
     }
 }, {timestamps: true} )
 

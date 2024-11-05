@@ -13,7 +13,11 @@ const roomSchema = new Schema( {
         type: String,
         required: true,
         unique: true,
-    }
+    },
+    isLabRoom: { 
+        type: Boolean,
+        default: false
+    },
 }, {timestamps: true} )
 
 

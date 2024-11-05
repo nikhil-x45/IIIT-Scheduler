@@ -11,7 +11,10 @@ connectDB()
 
 app.use( cors(
     {
-        methods: 'GET,POST,PATCH',
+        origin: "http://localhost:3000",
+        credentials: true,
+        methods: 'GET,POST,PATCH,PUT',
+        allowedHeaders: ["Content-Type", "Authorization"],
     }
 ) )
 app.use( express.json() )
